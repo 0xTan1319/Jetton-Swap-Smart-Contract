@@ -1,26 +1,33 @@
 import * as fs from "fs";
 import * as path from "path";
 import { Address, contractAddress } from "@ton/core";
-import { SampleTactContract } from "./output/sample_SampleTactContract";
+import { JettonDex } from "./output/sample_JettonDex";
 import { prepareTactDeployment } from "@tact-lang/deployer";
 
 (async () => {
     // Parameters
-    let testnet = true;
-    let packageName = "sample_SampleTactContract.pkg";
-    let owner = Address.parse("kQBM7QssP28PhrctDOyd47_zpFfDiQvv5V9iXizNopb1d2LB");
-    let init = await SampleTactContract.init(owner);
+    const testnet = true;
+    const packageName = "sample_JettonDex.pkg";  // Update to match your package name
+    const owner = Address.parse("kQAHImkv2ds8ztTvmEQR4XFv5gm7cw-0I9VCNENwh6CTD__X");
+    const jettonAAddress = Address.parse("kQAHImkv2ds8ztTvmEQR4XFv5gm7cw-0I9VCNENwh6CTD__X");  // Replace with Jetton A address
+    const jettonBAddress = Address.parse("kQAAtMDkcFQW7j_DPswXtmQvFICVLsTebWxjXPgC20NaMnuU");  // Replace with Jetton B address
 
-    // Load required data
-    let address = contractAddress(0, init);
-    let data = init.data.toBoc();
-    let pkg = fs.readFileSync(path.resolve(__dirname, "output", packageName));
+    console.log(`A : ${jettonAAddress}`);
+    console.log(`B : ${jettonBAddress}`);
 
-    // Prepareing
+    // Initialize the contract with required parameters
+    const init = await JettonDex.init(owner, jettonAAddress, jettonBAddress);
+
+    // Load required data from the generated package
+    const address = contractAddress(0, init);
+    const data = init.data.toBoc();
+    const pkg = fs.readFileSync(path.resolve(__dirname, "output", packageName));
+
+    // Prepare the package for deployment
     console.log("Uploading package...");
-    let prepare = await prepareTactDeployment({ pkg, data, testnet });
+    const prepare = await prepareTactDeployment({ pkg, data, testnet });
 
-    // Deploying
+    // Display deployment information
     console.log("============================================================================================");
     console.log("Contract Address");
     console.log("============================================================================================");

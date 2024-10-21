@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: SampleTactContract
-BOC Size: 701 bytes
+Contract: JettonDex
+BOC Size: 1038 bytes
 
 # Types
-Total Types: 8
+Total Types: 9
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -29,18 +29,24 @@ Signature: `DeployOk{queryId:uint64}`
 TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
 
-## Add
-TLB: `add#87d43ac2 amount:uint32 = Add`
-Signature: `Add{amount:uint32}`
+## SwapRequest
+TLB: `swap_request#228d8f29 amount:uint32 fromJetton:address = SwapRequest`
+Signature: `SwapRequest{amount:uint32,fromJetton:address}`
 
-## SampleTactContract$Data
+## AddJetton
+TLB: `add_jetton#b4dd8c64 amount:uint32 = AddJetton`
+Signature: `AddJetton{amount:uint32}`
+
+## JettonDex$Data
 TLB: `null`
 Signature: `null`
 
 # Get Methods
-Total Get Methods: 1
+Total Get Methods: 2
 
-## counter
+## getJettonABalance
+
+## getJettonBBalance
 
 # Error Codes
 2: Stack underflow
@@ -68,14 +74,20 @@ Total Get Methods: 1
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 4429: Invalid sender
+9633: Unsupported jetton address for swap
+23101: Insufficient Jetton B balance
+30901: Insufficient Jetton A balance
+30979: Unsupported jetton address
+53516: Insufficient Jetton A for swap
+54383: Insufficient Jetton B for swap
 
 # Trait Inheritance Diagram
 
 ```mermaid
 graph TD
-SampleTactContract
-SampleTactContract --> BaseTrait
-SampleTactContract --> Deployable
+JettonDex
+JettonDex --> BaseTrait
+JettonDex --> Deployable
 Deployable --> BaseTrait
 ```
 
@@ -83,5 +95,5 @@ Deployable --> BaseTrait
 
 ```mermaid
 graph TD
-SampleTactContract
+JettonDex
 ```

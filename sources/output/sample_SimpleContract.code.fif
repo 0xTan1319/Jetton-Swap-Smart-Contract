@@ -1,0 +1,398 @@
+ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\WorkShop\TON\JettonSwap
+ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/WorkShop/TON/JettonSwap/sources/output/sample_SimpleContract.code.fc` incl:`D:/WorkShop/TON/JettonSwap/sources/output/sample_SimpleContract.headers.fc` incl:`D:/WorkShop/TON/JettonSwap/sources/output/sample_SimpleContract.stdlib.fc` incl:`D:/WorkShop/TON/JettonSwap/sources/output/sample_SimpleContract.storage.fc` 
+PROGRAM{
+  DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
+  DECLPROC __tact_store_address
+  DECLPROC __tact_not_null
+  DECLPROC __tact_store_bool
+  DECLPROC __tact_string_builder_start
+  DECLPROC __tact_string_builder_start_comment
+  DECLPROC __tact_string_builder_end
+  DECLPROC __tact_string_builder_append
+  DECLPROC $TransferMsg$_load
+  DECLPROC $SimpleContract$_contract_init
+  DECLPROC $SimpleContract$_contract_load
+  DECLPROC $SimpleContract$_contract_store
+  DECLPROC $global_send
+  DECLPROC $String$_fun_asComment
+  DECLPROC $SendParameters$_constructor_to_value_mode_body
+  DECLPROC %$SimpleContract$_internal_empty
+  DECLPROC $SimpleContract$_internal_binary_TransferMsg
+  115390 DECLMETHOD lazy_deployment_completed
+  DECLPROC $SimpleContract$_contract_router_internal
+  DECLPROC recv_internal
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_context_sys
+  DECLGLOBVAR __tact_randomized
+  __tact_verify_address PROCINLINE:<{
+    DUP
+    SBITS
+    267 PUSHINT
+    EQUAL
+    136 THROWIFNOT
+    DUP
+    11 PLDU
+    DUP
+    1279 PUSHINT
+    EQUAL
+    137 THROWIF
+    10 PUSHPOW2
+    EQUAL
+    136 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_store_address PROCINLINE:<{
+    __tact_verify_address INLINECALLDICT
+    STSLICER
+  }>
+  __tact_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_store_bool PROCINLINE:<{
+    SWAP
+    1 STI
+  }>
+  __tact_string_builder_start PROCINLINE:<{
+    NIL
+    SWAP
+    TPUSH
+    PUSHNULL
+    TPUSH
+  }>
+  __tact_string_builder_start_comment PROCINLINE:<{
+    NEWC
+    0 PUSHINT
+    SWAP
+    32 STU
+    __tact_string_builder_start INLINECALLDICT
+  }>
+  __tact_string_builder_end PROCINLINE:<{
+    UNCONS
+    SWAP
+    ENDC
+    WHILE:<{
+      OVER
+      ISNULL
+      NOT
+    }>DO<{
+      SWAP
+      UNCONS
+      -ROT
+      STREF
+      ENDC
+    }>
+    NIP
+  }>
+  __tact_string_builder_append PROCREF:<{
+    DUP
+    SREFS
+    OVER
+    SBITS
+    WHILE:<{
+      DUP
+      0 GTINT
+      s2 PUSH
+      0 GTINT
+      OR
+    }>DO<{
+      s0 s3 XCHG
+      UNCONS
+      127 PUSHINT
+      s2 PUSH
+      BBITS
+      3 RSHIFT#
+      SUB
+      s0 s5 XCHG
+      3 RSHIFT#
+      s5 s5 XCPU
+      MIN
+      DUP
+      0 GTINT
+      IF:<{
+        DUP
+        3 LSHIFT#
+        s1 s5 XCHG
+        LDSLICEX
+        s3 s3 XCHG2
+        STSLICER
+        s0 s1 s4 XCHG3
+      }>
+      -ROT
+      CONS
+      s4 s1 PUSH2
+      SUB
+      0 GTINT
+      IF:<{
+        NEWC
+        SWAP
+        CONS
+        s4 s4 XCHG2
+        SUB
+        3 LSHIFT#
+      }>ELSE<{
+        NIP
+        s3 POP
+        0 GTINT
+        IF:<{
+          LDREF
+          DROP
+          CTOS
+          DUP
+          SREFS
+          OVER
+          SBITS
+        }>ELSE<{
+          0 PUSHINT
+          DUP
+        }>
+      }>
+    }>
+    3 BLKDROP
+  }>
+  $TransferMsg$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    1192227 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    s1 s2 XCHG
+  }>
+  $SimpleContract$_contract_init PROCREF:<{
+    PUSHNULL
+  }>
+  $SimpleContract$_contract_load PROCREF:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_context_sys SETGLOB
+    1 LDI
+    DROP
+    IFJMP:<{
+      PUSHNULL
+    }>
+    MYADDR
+    11 PLDU
+    10 PUSHPOW2
+    EQUAL
+    137 THROWIFNOT
+    $SimpleContract$_contract_init INLINECALLDICT
+  }>
+  $SimpleContract$_contract_store PROCINLINE:<{
+    DROP
+    NEWC
+    __tact_context_sys GETGLOB
+    SWAP
+    STREF
+    TRUE
+    SWAP
+    1 STI
+    ENDC
+    c4 POP
+  }>
+  $global_send PROCREF:<{
+    NEWC
+    1 PUSHINT
+    SWAP
+    2 STI
+    s0 s7 XCHG2
+    __tact_store_bool INLINECALLDICT
+    0 PUSHINT
+    SWAP
+    3 STI
+    s0 s5 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s3 XCHG2
+    STGRAMS
+    0 PUSHINT
+    SWAP
+    105 STI
+    s3 PUSH
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+    }>ELSE<{
+      s4 PUSH
+      ISNULL
+      NOT
+    }>
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      NEWC
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      ENDC
+      ROT
+      STREF
+    }>ELSE<{
+      s3 POP
+      s3 POP
+      SWAP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      SWAP
+      __tact_not_null INLINECALLDICT
+      SWAP
+      STREF
+    }>ELSE<{
+      NIP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    ENDC
+    SWAP
+    SENDRAWMSG
+  }>
+  $String$_fun_asComment PROCREF:<{
+    __tact_string_builder_start_comment INLINECALLDICT
+    SWAP
+    __tact_string_builder_append INLINECALLDICT
+    __tact_string_builder_end INLINECALLDICT
+  }>
+  $SendParameters$_constructor_to_value_mode_body PROCINLINE:<{
+    TRUE
+    4 -ROLL
+    PUSHNULL
+    PUSHNULL
+  }>
+  %$SimpleContract$_internal_empty PROCINLINE:<{
+  }>
+  $SimpleContract$_internal_binary_TransferMsg PROCINLINE:<{
+    0 PUSHINT
+    64 PUSHINT
+    s0 s2 XCHG
+    $String$_fun_asComment INLINECALLDICT
+    s1 s2 XCHG
+    $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  lazy_deployment_completed PROC:<{
+    c4 PUSH
+    CTOS
+    1 LDI
+    SWAP
+  }>
+  $SimpleContract$_contract_router_internal PROCREF:<{
+    SWAP
+    IFJMP:<{
+      DROP
+      TRUE
+    }>
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    DUP
+    0 EQINT
+    s2 PUSH
+    SBITS
+    33 LESSINT
+    AND
+    IFJMP:<{
+      2DROP
+      %$SimpleContract$_internal_empty INLINECALLDICT
+      TRUE
+    }>
+    1192227 PUSHINT
+    EQUAL
+    IFJMP:<{
+      $TransferMsg$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $SimpleContract$_internal_binary_TransferMsg INLINECALLDICT
+      TRUE
+    }>
+    DROP
+    FALSE
+  }>
+  recv_internal PROC:<{
+    SWAP
+    CTOS
+    4 LDU
+    SWAP
+    1 PUSHINT
+    AND
+    NEGATE
+    SWAP
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+    s0 s4 s2 PUXCPU
+    s0 s3 XCHG
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    $SimpleContract$_contract_load INLINECALLDICT
+    -ROT
+    $SimpleContract$_contract_router_internal INLINECALLDICT
+    130 THROWIFNOT
+    $SimpleContract$_contract_store INLINECALLDICT
+  }>
+}END>c

@@ -1,0 +1,96 @@
+#pragma version =0.4.4;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "sample_SimpleContract.headers.fc";
+#include "sample_SimpleContract.stdlib.fc";
+#include "sample_SimpleContract.storage.fc";
+
+;;
+;; Contract SimpleContract functions
+;;
+
+tuple $SimpleContract$_contract_init() impure inline_ref {
+    tuple $self = null();
+    return $self;
+}
+
+;;
+;; Receivers of a Contract SimpleContract
+;;
+
+((tuple), ()) %$SimpleContract$_internal_empty(tuple $self) impure inline {
+    var $self = $self;
+    return ($self, ());
+}
+
+((tuple), ()) $SimpleContract$_internal_binary_TransferMsg(tuple $self, (slice, slice) $msg) impure inline {
+    var $self = $self;
+    var ($msg'to, $msg'text) = $msg;
+    $global_send($SendParameters$_constructor_to_value_mode_body($msg'to, 0, 64, $String$_fun_asComment($msg'text)));
+    return ($self, ());
+}
+
+;;
+;; Get methods of a Contract SimpleContract
+;;
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract SimpleContract
+;;
+
+(tuple, int) $SimpleContract$_contract_router_internal(tuple self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive empty message
+    if ((op == 0) & (slice_bits(in_msg) <= 32)) {
+        self~%$SimpleContract$_internal_empty();
+        return (self, true);
+    }
+    
+    ;; Receive TransferMsg message
+    if (op == 1192227) {
+        var msg = in_msg~$TransferMsg$_load();
+        self~$SimpleContract$_internal_binary_TransferMsg(msg);
+        return (self, true);
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $SimpleContract$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$SimpleContract$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $SimpleContract$_contract_store(self);
+}

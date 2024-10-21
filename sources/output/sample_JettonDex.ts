@@ -362,128 +362,203 @@ function dictValueParserFactoryDeploy(): DictionaryValue<FactoryDeploy> {
     }
 }
 
-export type Add = {
-    $$type: 'Add';
+export type SwapRequest = {
+    $$type: 'SwapRequest';
+    amount: bigint;
+    fromJetton: Address;
+}
+
+export function storeSwapRequest(src: SwapRequest) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(579702569, 32);
+        b_0.storeUint(src.amount, 32);
+        b_0.storeAddress(src.fromJetton);
+    };
+}
+
+export function loadSwapRequest(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 579702569) { throw Error('Invalid prefix'); }
+    let _amount = sc_0.loadUintBig(32);
+    let _fromJetton = sc_0.loadAddress();
+    return { $$type: 'SwapRequest' as const, amount: _amount, fromJetton: _fromJetton };
+}
+
+function loadTupleSwapRequest(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    let _fromJetton = source.readAddress();
+    return { $$type: 'SwapRequest' as const, amount: _amount, fromJetton: _fromJetton };
+}
+
+function loadGetterTupleSwapRequest(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    let _fromJetton = source.readAddress();
+    return { $$type: 'SwapRequest' as const, amount: _amount, fromJetton: _fromJetton };
+}
+
+function storeTupleSwapRequest(source: SwapRequest) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.amount);
+    builder.writeAddress(source.fromJetton);
+    return builder.build();
+}
+
+function dictValueParserSwapRequest(): DictionaryValue<SwapRequest> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeSwapRequest(src)).endCell());
+        },
+        parse: (src) => {
+            return loadSwapRequest(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type AddJetton = {
+    $$type: 'AddJetton';
     amount: bigint;
 }
 
-export function storeAdd(src: Add) {
+export function storeAddJetton(src: AddJetton) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(2278832834, 32);
+        b_0.storeUint(3034418276, 32);
         b_0.storeUint(src.amount, 32);
     };
 }
 
-export function loadAdd(slice: Slice) {
+export function loadAddJetton(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2278832834) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 3034418276) { throw Error('Invalid prefix'); }
     let _amount = sc_0.loadUintBig(32);
-    return { $$type: 'Add' as const, amount: _amount };
+    return { $$type: 'AddJetton' as const, amount: _amount };
 }
 
-function loadTupleAdd(source: TupleReader) {
+function loadTupleAddJetton(source: TupleReader) {
     let _amount = source.readBigNumber();
-    return { $$type: 'Add' as const, amount: _amount };
+    return { $$type: 'AddJetton' as const, amount: _amount };
 }
 
-function loadGetterTupleAdd(source: TupleReader) {
+function loadGetterTupleAddJetton(source: TupleReader) {
     let _amount = source.readBigNumber();
-    return { $$type: 'Add' as const, amount: _amount };
+    return { $$type: 'AddJetton' as const, amount: _amount };
 }
 
-function storeTupleAdd(source: Add) {
+function storeTupleAddJetton(source: AddJetton) {
     let builder = new TupleBuilder();
     builder.writeNumber(source.amount);
     return builder.build();
 }
 
-function dictValueParserAdd(): DictionaryValue<Add> {
+function dictValueParserAddJetton(): DictionaryValue<AddJetton> {
     return {
         serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeAdd(src)).endCell());
+            builder.storeRef(beginCell().store(storeAddJetton(src)).endCell());
         },
         parse: (src) => {
-            return loadAdd(src.loadRef().beginParse());
+            return loadAddJetton(src.loadRef().beginParse());
         }
     }
 }
 
-export type SampleTactContract$Data = {
-    $$type: 'SampleTactContract$Data';
+export type JettonDex$Data = {
+    $$type: 'JettonDex$Data';
     owner: Address;
-    counter: bigint;
+    jettonABalance: bigint;
+    jettonBBalance: bigint;
+    jettonAAddress: Address;
+    jettonBAddress: Address;
 }
 
-export function storeSampleTactContract$Data(src: SampleTactContract$Data) {
+export function storeJettonDex$Data(src: JettonDex$Data) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeAddress(src.owner);
-        b_0.storeUint(src.counter, 32);
+        b_0.storeUint(src.jettonABalance, 32);
+        b_0.storeUint(src.jettonBBalance, 32);
+        b_0.storeAddress(src.jettonAAddress);
+        b_0.storeAddress(src.jettonBAddress);
     };
 }
 
-export function loadSampleTactContract$Data(slice: Slice) {
+export function loadJettonDex$Data(slice: Slice) {
     let sc_0 = slice;
     let _owner = sc_0.loadAddress();
-    let _counter = sc_0.loadUintBig(32);
-    return { $$type: 'SampleTactContract$Data' as const, owner: _owner, counter: _counter };
+    let _jettonABalance = sc_0.loadUintBig(32);
+    let _jettonBBalance = sc_0.loadUintBig(32);
+    let _jettonAAddress = sc_0.loadAddress();
+    let _jettonBAddress = sc_0.loadAddress();
+    return { $$type: 'JettonDex$Data' as const, owner: _owner, jettonABalance: _jettonABalance, jettonBBalance: _jettonBBalance, jettonAAddress: _jettonAAddress, jettonBAddress: _jettonBAddress };
 }
 
-function loadTupleSampleTactContract$Data(source: TupleReader) {
+function loadTupleJettonDex$Data(source: TupleReader) {
     let _owner = source.readAddress();
-    let _counter = source.readBigNumber();
-    return { $$type: 'SampleTactContract$Data' as const, owner: _owner, counter: _counter };
+    let _jettonABalance = source.readBigNumber();
+    let _jettonBBalance = source.readBigNumber();
+    let _jettonAAddress = source.readAddress();
+    let _jettonBAddress = source.readAddress();
+    return { $$type: 'JettonDex$Data' as const, owner: _owner, jettonABalance: _jettonABalance, jettonBBalance: _jettonBBalance, jettonAAddress: _jettonAAddress, jettonBAddress: _jettonBAddress };
 }
 
-function loadGetterTupleSampleTactContract$Data(source: TupleReader) {
+function loadGetterTupleJettonDex$Data(source: TupleReader) {
     let _owner = source.readAddress();
-    let _counter = source.readBigNumber();
-    return { $$type: 'SampleTactContract$Data' as const, owner: _owner, counter: _counter };
+    let _jettonABalance = source.readBigNumber();
+    let _jettonBBalance = source.readBigNumber();
+    let _jettonAAddress = source.readAddress();
+    let _jettonBAddress = source.readAddress();
+    return { $$type: 'JettonDex$Data' as const, owner: _owner, jettonABalance: _jettonABalance, jettonBBalance: _jettonBBalance, jettonAAddress: _jettonAAddress, jettonBAddress: _jettonBAddress };
 }
 
-function storeTupleSampleTactContract$Data(source: SampleTactContract$Data) {
+function storeTupleJettonDex$Data(source: JettonDex$Data) {
     let builder = new TupleBuilder();
     builder.writeAddress(source.owner);
-    builder.writeNumber(source.counter);
+    builder.writeNumber(source.jettonABalance);
+    builder.writeNumber(source.jettonBBalance);
+    builder.writeAddress(source.jettonAAddress);
+    builder.writeAddress(source.jettonBAddress);
     return builder.build();
 }
 
-function dictValueParserSampleTactContract$Data(): DictionaryValue<SampleTactContract$Data> {
+function dictValueParserJettonDex$Data(): DictionaryValue<JettonDex$Data> {
     return {
         serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeSampleTactContract$Data(src)).endCell());
+            builder.storeRef(beginCell().store(storeJettonDex$Data(src)).endCell());
         },
         parse: (src) => {
-            return loadSampleTactContract$Data(src.loadRef().beginParse());
+            return loadJettonDex$Data(src.loadRef().beginParse());
         }
     }
 }
 
- type SampleTactContract_init_args = {
-    $$type: 'SampleTactContract_init_args';
+ type JettonDex_init_args = {
+    $$type: 'JettonDex_init_args';
     owner: Address;
+    jettonAAddress: Address;
+    jettonBAddress: Address;
 }
 
-function initSampleTactContract_init_args(src: SampleTactContract_init_args) {
+function initJettonDex_init_args(src: JettonDex_init_args) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeAddress(src.owner);
+        b_0.storeAddress(src.jettonAAddress);
+        b_0.storeAddress(src.jettonBAddress);
     };
 }
 
-async function SampleTactContract_init(owner: Address) {
-    const __code = Cell.fromBase64('te6ccgECEAEAArEAART/APSkE/S88sgLAQIBYgIDAtTQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxa2zzy4ILI+EMBzH8BygBZWSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssfye1UDQQCAVgLDAPg7aLt+wGSMH/gcCHXScIflTAg1wsf3iCCEIfUOsK6jpUw0x8BghCH1DrCuvLggdMfATHbPH/gIIIQlGqYtrqOqDDTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gwACRMOMNcAYIBQNs+QGC8MT41yMS7f3vW3vseDO9uxYtFRG9eKkSrtDyY3r2VXKuuo+Ocds8iPhCAX9t2zx/2zHgBgcIACT4QW8kECNfAyOBEU0CxwXy9KAAHgAAAABpbmNyZW1lbnRlZAE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwJAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAoAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwCEbmhjbPNs8bCGA0OABG4K+7UTQ0gABgBwO1E0NQB+GPSAAGOJfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0x9ZbBLg+CjXCwqDCbry4In6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdHbPA8AAiAAAnA=');
-    const __system = Cell.fromBase64('te6cckECEgEAArsAAQHAAQEFoebTAgEU/wD0pBP0vPLICwMCAWIEDALU0AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8Wts88uCCyPhDAcx/AcoAWVkg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbLH8ntVA4FA+Dtou37AZIwf+BwIddJwh+VMCDXCx/eIIIQh9Q6wrqOlTDTHwGCEIfUOsK68uCB0x8BMds8f+AgghCUapi2uo6oMNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8f+DAAJEw4w1wBwkGA2z5AYLwxPjXIxLt/e9be+x4M727Fi0VEb14qRKu0PJjevZVcq66j45x2zyI+EIBf23bPH/bMeAHCAkAJPhBbyQQI18DI4ERTQLHBfL0oAAeAAAAAGluY3JlbWVudGVkATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPAoByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsACwCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAIBWA0RAhG5oY2zzbPGwhgOEAHA7UTQ1AH4Y9IAAY4l+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTH1lsEuD4KNcLCoMJuvLgifpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0ds8DwACcAACIAARuCvu1E0NIAAYJ1QBQQ==');
+async function JettonDex_init(owner: Address, jettonAAddress: Address, jettonBAddress: Address) {
+    const __code = Cell.fromBase64('te6ccgECFQEABAIAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVFNs88uCCEQQFAgEgDA0D9AGSMH/gcCHXScIflTAg1wsf3iCCELTdjGS6jp0w0x8BghC03YxkuvLggdMfATH4QW8kECNfA9s8f+AgghAijY8puo61MNMfAYIQIo2PKbry4IHTH/pAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSbBLbPH/gBgcIAOLI+EMBzH8BygBVQFBUINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEssfyx9YINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFsntVABe+EFvJBAjXwMngRFNAscF8vRTMMcFkzAUoI4SUiDHBZIToJcwgXkD8vAC4kAT4gMArFMwxwWOHjCBeLVTFbvy9FMwqCWpBIIA1G9TFbvy9FBVoVA0oI4uUiDHBY4dgVo9UxS78vRTQKgkqQSCANEMUxa78vRQRKFQQ6CXMIElofLwA+JDE+ICAWaCEJRqmLa6jqfTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gMHAJATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPAoByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsACwCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAIRvFq+2ebZ42KMEQ4CA5oYDxAAAiMAD6L7tRNDSAAGAg+gi2zzbPGxRhESAfbtRNDUAfhj0gABjmn6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdMf0x/6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgVFEMwbBXg+CjXCwoTAAIiAdiDCbry4In6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiEMwA9FY2zwUAAhwUgIT');
+    const __system = Cell.fromBase64('te6cckECFwEABAwAAQHAAQEFoHy7AgEU/wD0pBP0vPLICwMCAWIEDQN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRTbPPLgghMFDAP0AZIwf+BwIddJwh+VMCDXCx/eIIIQtN2MZLqOnTDTHwGCELTdjGS68uCB0x8BMfhBbyQQI18D2zx/4CCCECKNjym6jrUw0x8BghAijY8puvLggdMf+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBJsEts8f+AGBwgAXvhBbyQQI18DJ4ERTQLHBfL0UzDHBZMwFKCOElIgxwWSE6CXMIF5A/LwAuJAE+IDAKxTMMcFjh4wgXi1UxW78vRTMKglqQSCANRvUxW78vRQVaFQNKCOLlIgxwWOHYFaPVMUu/L0U0CoJKkEggDRDFMWu/L0UEShUEOglzCBJaHy8APiQxPiAgFmghCUapi2uo6n0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/4DBwCQE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwKAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAsAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwA4sj4QwHMfwHKAFVAUFQg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYSyx/LH1gg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8Wye1UAgEgDhACEbxavtnm2eNijBMPAAIjAgOaGBESAA+i+7UTQ0gABgIPoIts82zxsUYTFgH27UTQ1AH4Y9IAAY5p+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTH9Mf+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFRRDMGwV4Pgo1wsKFAHYgwm68uCJ+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhDMAPRWNs8FQAIcFICEwACIm9s0lQ=');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
-    initSampleTactContract_init_args({ $$type: 'SampleTactContract_init_args', owner })(builder);
+    initJettonDex_init_args({ $$type: 'JettonDex_init_args', owner, jettonAAddress, jettonBAddress })(builder);
     const __data = builder.endCell();
     return { code: __code, data: __data };
 }
 
-const SampleTactContract_errors: { [key: number]: { message: string } } = {
+const JettonDex_errors: { [key: number]: { message: string } } = {
     2: { message: `Stack underflow` },
     3: { message: `Stack overflow` },
     4: { message: `Integer overflow` },
@@ -509,56 +584,65 @@ const SampleTactContract_errors: { [key: number]: { message: string } } = {
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
     4429: { message: `Invalid sender` },
+    9633: { message: `Unsupported jetton address for swap` },
+    23101: { message: `Insufficient Jetton B balance` },
+    30901: { message: `Insufficient Jetton A balance` },
+    30979: { message: `Unsupported jetton address` },
+    53516: { message: `Insufficient Jetton A for swap` },
+    54383: { message: `Insufficient Jetton B for swap` },
 }
 
-const SampleTactContract_types: ABIType[] = [
+const JettonDex_types: ABIType[] = [
     {"name":"StateInit","header":null,"fields":[{"name":"code","type":{"kind":"simple","type":"cell","optional":false}},{"name":"data","type":{"kind":"simple","type":"cell","optional":false}}]},
     {"name":"Context","header":null,"fields":[{"name":"bounced","type":{"kind":"simple","type":"bool","optional":false}},{"name":"sender","type":{"kind":"simple","type":"address","optional":false}},{"name":"value","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"raw","type":{"kind":"simple","type":"slice","optional":false}}]},
     {"name":"SendParameters","header":null,"fields":[{"name":"bounce","type":{"kind":"simple","type":"bool","optional":false}},{"name":"to","type":{"kind":"simple","type":"address","optional":false}},{"name":"value","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"mode","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"body","type":{"kind":"simple","type":"cell","optional":true}},{"name":"code","type":{"kind":"simple","type":"cell","optional":true}},{"name":"data","type":{"kind":"simple","type":"cell","optional":true}}]},
     {"name":"Deploy","header":2490013878,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"DeployOk","header":2952335191,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
-    {"name":"Add","header":2278832834,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
-    {"name":"SampleTactContract$Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"counter","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
+    {"name":"SwapRequest","header":579702569,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"fromJetton","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"AddJetton","header":3034418276,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
+    {"name":"JettonDex$Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"jettonABalance","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"jettonBBalance","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"jettonAAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"jettonBAddress","type":{"kind":"simple","type":"address","optional":false}}]},
 ]
 
-const SampleTactContract_getters: ABIGetter[] = [
-    {"name":"counter","arguments":[],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
+const JettonDex_getters: ABIGetter[] = [
+    {"name":"getJettonABalance","arguments":[],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
+    {"name":"getJettonBBalance","arguments":[],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
 ]
 
-export const SampleTactContract_getterMapping: { [key: string]: string } = {
-    'counter': 'getCounter',
+export const JettonDex_getterMapping: { [key: string]: string } = {
+    'getJettonABalance': 'getGetJettonABalance',
+    'getJettonBBalance': 'getGetJettonBBalance',
 }
 
-const SampleTactContract_receivers: ABIReceiver[] = [
-    {"receiver":"internal","message":{"kind":"typed","type":"Add"}},
-    {"receiver":"internal","message":{"kind":"text","text":"increment"}},
+const JettonDex_receivers: ABIReceiver[] = [
+    {"receiver":"internal","message":{"kind":"typed","type":"AddJetton"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"SwapRequest"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
 
-export class SampleTactContract implements Contract {
+export class JettonDex implements Contract {
     
-    static async init(owner: Address) {
-        return await SampleTactContract_init(owner);
+    static async init(owner: Address, jettonAAddress: Address, jettonBAddress: Address) {
+        return await JettonDex_init(owner, jettonAAddress, jettonBAddress);
     }
     
-    static async fromInit(owner: Address) {
-        const init = await SampleTactContract_init(owner);
+    static async fromInit(owner: Address, jettonAAddress: Address, jettonBAddress: Address) {
+        const init = await JettonDex_init(owner, jettonAAddress, jettonBAddress);
         const address = contractAddress(0, init);
-        return new SampleTactContract(address, init);
+        return new JettonDex(address, init);
     }
     
     static fromAddress(address: Address) {
-        return new SampleTactContract(address);
+        return new JettonDex(address);
     }
     
     readonly address: Address; 
     readonly init?: { code: Cell, data: Cell };
     readonly abi: ContractABI = {
-        types:  SampleTactContract_types,
-        getters: SampleTactContract_getters,
-        receivers: SampleTactContract_receivers,
-        errors: SampleTactContract_errors,
+        types:  JettonDex_types,
+        getters: JettonDex_getters,
+        receivers: JettonDex_receivers,
+        errors: JettonDex_errors,
     };
     
     private constructor(address: Address, init?: { code: Cell, data: Cell }) {
@@ -566,14 +650,14 @@ export class SampleTactContract implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: Add | 'increment' | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: AddJetton | SwapRequest | Deploy) {
         
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Add') {
-            body = beginCell().store(storeAdd(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'AddJetton') {
+            body = beginCell().store(storeAddJetton(message)).endCell();
         }
-        if (message === 'increment') {
-            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'SwapRequest') {
+            body = beginCell().store(storeSwapRequest(message)).endCell();
         }
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Deploy') {
             body = beginCell().store(storeDeploy(message)).endCell();
@@ -584,9 +668,16 @@ export class SampleTactContract implements Contract {
         
     }
     
-    async getCounter(provider: ContractProvider) {
+    async getGetJettonABalance(provider: ContractProvider) {
         let builder = new TupleBuilder();
-        let source = (await provider.get('counter', builder.build())).stack;
+        let source = (await provider.get('getJettonABalance', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
+    }
+    
+    async getGetJettonBBalance(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('getJettonBBalance', builder.build())).stack;
         let result = source.readBigNumber();
         return result;
     }

@@ -1,0 +1,45 @@
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice $to, int $value, int $mode, cell $body) inline {
+    return (true, $to, $value, $mode, $body, null(), null());
+}
+
+;;
+;; Type: TransferMsg
+;; Header: 0x00123123
+;; TLB: transfer_msg#00123123 to:address text:^string = TransferMsg
+;;
+
+(slice, ((slice, slice))) $TransferMsg$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1192227);
+    var v'to = sc_0~__tact_load_address();
+    var v'text = sc_0~load_ref().begin_parse();
+    return (sc_0, (v'to, v'text));
+}
+
+;;
+;; Type: SimpleContract
+;;
+
+tuple $SimpleContract$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return null();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        return $SimpleContract$_contract_init();
+    }
+}
+
+() $SimpleContract$_contract_store(tuple v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    set_data(b.end_cell());
+}

@@ -1,3 +1,5 @@
+ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\WorkShop\TON\JettonSwap
+ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/WorkShop/TON/JettonSwap/sources/output/sample_JettonDex.code.fc` incl:`D:/WorkShop/TON/JettonSwap/sources/output/sample_JettonDex.headers.fc` incl:`D:/WorkShop/TON/JettonSwap/sources/output/sample_JettonDex.stdlib.fc` incl:`D:/WorkShop/TON/JettonSwap/sources/output/sample_JettonDex.storage.fc` 
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
@@ -11,28 +13,32 @@ PROGRAM{
   DECLPROC $Deploy$_load
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
-  DECLPROC $Add$_load
-  DECLPROC $SampleTactContract$_store
-  DECLPROC $SampleTactContract$_load
+  DECLPROC $SwapRequest$_load
+  DECLPROC $AddJetton$_load
+  DECLPROC $JettonDex$_store
+  DECLPROC $JettonDex$_load
   DECLPROC $StateInit$_not_null
-  DECLPROC $SampleTactContract$init$_load
-  DECLPROC $SampleTactContract$_contract_init
-  DECLPROC $SampleTactContract$_contract_load
-  DECLPROC $SampleTactContract$_contract_store
+  DECLPROC $Context$_get_sender
+  DECLPROC $JettonDex$init$_load
+  DECLPROC $JettonDex$_contract_init
+  DECLPROC $JettonDex$_contract_load
+  DECLPROC $JettonDex$_contract_store
   DECLPROC $global_send
-  DECLPROC $SampleTactContract$_fun_add
-  DECLPROC $SampleTactContract$_fun_counter
+  DECLPROC $JettonDex$_fun_addJetton
+  DECLPROC $JettonDex$_fun_executeSwap
+  DECLPROC $JettonDex$_fun_getJettonABalance
+  DECLPROC $JettonDex$_fun_getJettonBBalance
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
-  DECLPROC $SampleTactContract$_fun_forward
-  DECLPROC $SampleTactContract$_fun_reply
-  DECLPROC $SampleTactContract$_fun_notify
+  DECLPROC $JettonDex$_fun_forward
+  DECLPROC $JettonDex$_fun_notify
   DECLPROC $DeployOk$_constructor_queryId
-  DECLPROC $SampleTactContract$_internal_binary_Add
-  DECLPROC $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae
-  DECLPROC $SampleTactContract$_internal_binary_Deploy
-  104984 DECLMETHOD %counter
+  DECLPROC $JettonDex$_internal_binary_AddJetton
+  DECLPROC $JettonDex$_internal_binary_SwapRequest
+  DECLPROC $JettonDex$_internal_binary_Deploy
+  68439 DECLMETHOD %getJettonABalance
+  115490 DECLMETHOD %getJettonBBalance
   115390 DECLMETHOD lazy_deployment_completed
-  DECLPROC $SampleTactContract$_contract_router_internal
+  DECLPROC $JettonDex$_contract_router_internal
   DECLPROC recv_internal
   DECLGLOBVAR __tact_context
   DECLGLOBVAR __tact_context_sender
@@ -107,25 +113,47 @@ PROGRAM{
     $DeployOk$_store INLINECALLDICT
     ENDC
   }>
-  $Add$_load PROCINLINE:<{
+  $SwapRequest$_load PROCINLINE:<{
     32 LDU
     SWAP
-    2278832834 PUSHINT
+    579702569 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    32 LDU
+    __tact_load_address INLINECALLDICT
+    s1 s2 XCHG
+  }>
+  $AddJetton$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    3034418276 PUSHINT
     EQUAL
     129 THROWIFNOT
     32 LDU
     SWAP
   }>
-  $SampleTactContract$_store PROCINLINE:<{
-    -ROT
+  $JettonDex$_store PROCINLINE:<{
+    s5 s4 XCHG2
     __tact_store_address INLINECALLDICT
+    s1 s2 XCHG
     32 STU
+    32 STU
+    ROT
+    __tact_store_address INLINECALLDICT
+    SWAP
+    __tact_store_address INLINECALLDICT
   }>
-  $SampleTactContract$_load PROCINLINE:<{
+  $JettonDex$_load PROCINLINE:<{
     __tact_load_address INLINECALLDICT
     SWAP
     32 LDU
-    -ROT
+    32 LDU
+    __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address INLINECALLDICT
+    s1 s5 XCHG
+    s1 s4 XCHG
+    s3 s3 s0 XCHG3
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
@@ -133,13 +161,24 @@ PROGRAM{
     128 THROWIF
     2 UNTUPLE
   }>
-  $SampleTactContract$init$_load PROCINLINE:<{
+  $Context$_get_sender PROCINLINE:<{
+    s2 s3 XCHG
+    3 BLKDROP
+  }>
+  $JettonDex$init$_load PROCINLINE:<{
     __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address INLINECALLDICT
+    s3 s3 s0 XCHG3
   }>
-  $SampleTactContract$_contract_init PROCREF:<{
+  $JettonDex$_contract_init PROCREF:<{
     0 PUSHINT
+    s0 s1 PUXC
+    s1 s3 XCHG
   }>
-  $SampleTactContract$_contract_load PROCREF:<{
+  $JettonDex$_contract_load PROCREF:<{
     c4 PUSH
     CTOS
     LDREF
@@ -148,20 +187,21 @@ PROGRAM{
     1 LDI
     SWAP
     IFJMP:<{
-      $SampleTactContract$_load INLINECALLDICT
-      1 2 BLKDROP2
+      $JettonDex$_load INLINECALLDICT
+      1 5 BLKDROP2
     }>
     MYADDR
     11 PLDU
     10 PUSHPOW2
     EQUAL
     137 THROWIFNOT
-    $SampleTactContract$init$_load INLINECALLDICT
-    SWAP
+    $JettonDex$init$_load INLINECALLDICT
+    s0 s3 XCHG
     ENDS
-    $SampleTactContract$_contract_init INLINECALLDICT
+    ROT
+    $JettonDex$_contract_init INLINECALLDICT
   }>
-  $SampleTactContract$_contract_store PROCINLINE:<{
+  $JettonDex$_contract_store PROCINLINE:<{
     NEWC
     __tact_context_sys GETGLOB
     SWAP
@@ -169,8 +209,8 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    -ROT
-    $SampleTactContract$_store INLINECALLDICT
+    5 -ROLL
+    $JettonDex$_store INLINECALLDICT
     ENDC
     c4 POP
   }>
@@ -276,23 +316,97 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
-  $SampleTactContract$_fun_add PROCREF:<{
+  $JettonDex$_fun_addJetton PROCREF:<{
     __tact_context_get INLINECALLDICT
     s2 s3 XCHG
     3 BLKDROP
-    s3 PUSH
+    s7 PUSH
     4429 PUSHINT
     s0 s2 XCHG
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
-    ADD
+    s3 s0 PUSH2
+    __tact_slice_eq_bits INLINECALLDICT
+    IF:<{
+      DROP
+      s1 s4 XCHG
+      ADD
+    }>ELSE<{
+      s2 s(-1) PUXC
+      __tact_slice_eq_bits INLINECALLDICT
+      IF:<{
+        s1 s3 XCHG
+        ADD
+      }>ELSE<{
+        DROP
+        30979 PUSHINT
+        THROWANY
+        s0 s2 XCHG
+      }>
+      s0 s1 s3 XCHG3
+    }>
+    s0 s3 XCHG
   }>
-  $SampleTactContract$_fun_counter PROCREF:<{
-    DUP
+  $JettonDex$_fun_executeSwap PROCREF:<{
+    s3 s0 PUSH2
+    __tact_slice_eq_bits INLINECALLDICT
+    IF:<{
+      DROP
+      30901 PUSHINT
+      s1 s5 PUSH2
+      LEQ
+      THROWANYIFNOT
+      s3 s0 PUSH2
+      MUL
+      s5 PUSH
+      DIV
+      54383 PUSHINT
+      s1 s5 PUSH2
+      LEQ
+      THROWANYIFNOT
+      s5 s5 XCHG2
+      SUB
+      s3 s4 XCHG2
+      ADD
+    }>ELSE<{
+      s2 s(-1) PUXC
+      __tact_slice_eq_bits INLINECALLDICT
+      IF:<{
+        23101 PUSHINT
+        s1 s4 PUSH2
+        LEQ
+        THROWANYIFNOT
+        s4 s0 PUSH2
+        MUL
+        s4 PUSH
+        DIV
+        53516 PUSHINT
+        s1 s6 PUSH2
+        LEQ
+        THROWANYIFNOT
+        s4 s4 XCHG2
+        SUB
+        s4 s3 XCHG2
+        ADD
+      }>ELSE<{
+        DROP
+        9633 PUSHINT
+        THROWANY
+        s0 s3 XCHG
+      }>
+      s3 s1 s3 XCHG3
+    }>
+    s0 s2 XCHG
+  }>
+  $JettonDex$_fun_getJettonABalance PROCREF:<{
+    s3 PUSH
+  }>
+  $JettonDex$_fun_getJettonBBalance PROCREF:<{
+    s2 PUSH
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
-  $SampleTactContract$_fun_forward PROCREF:<{
+  $JettonDex$_fun_forward PROCREF:<{
     PUSHNULL
     PUSHNULL
     s2 PUSH
@@ -314,40 +428,37 @@ PROGRAM{
     $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
   }>
-  $SampleTactContract$_fun_reply PROCINLINE:<{
-    __tact_context_get_sender INLINECALLDICT
-    SWAP
-    TRUE
-    PUSHNULL
-    $SampleTactContract$_fun_forward INLINECALLDICT
-  }>
-  $SampleTactContract$_fun_notify PROCINLINE:<{
+  $JettonDex$_fun_notify PROCINLINE:<{
     __tact_context_get_sender INLINECALLDICT
     SWAP
     FALSE
     PUSHNULL
-    $SampleTactContract$_fun_forward INLINECALLDICT
+    $JettonDex$_fun_forward INLINECALLDICT
   }>
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
-  $SampleTactContract$_internal_binary_Add PROCINLINE:<{
-    $SampleTactContract$_fun_add INLINECALLDICT
+  $JettonDex$_internal_binary_AddJetton PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    $Context$_get_sender INLINECALLDICT
+    $JettonDex$_fun_addJetton INLINECALLDICT
   }>
-  $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae PROCINLINE:<{
-    1 PUSHINT
-    $SampleTactContract$_fun_add INLINECALLDICT
-    B{b5ee9c7241010101001100001e00000000696e6372656d656e7465648430bf20} B>boc PUSHREF
-    $SampleTactContract$_fun_reply INLINECALLDICT
+  $JettonDex$_internal_binary_SwapRequest PROCINLINE:<{
+    $JettonDex$_fun_executeSwap INLINECALLDICT
   }>
-  $SampleTactContract$_internal_binary_Deploy PROCINLINE:<{
+  $JettonDex$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
     $DeployOk$_store_cell INLINECALLDICT
-    $SampleTactContract$_fun_notify INLINECALLDICT
+    $JettonDex$_fun_notify INLINECALLDICT
   }>
-  %counter PROC:<{
-    $SampleTactContract$_contract_load INLINECALLDICT
-    $SampleTactContract$_fun_counter INLINECALLDICT
-    2 1 BLKDROP2
+  %getJettonABalance PROC:<{
+    $JettonDex$_contract_load INLINECALLDICT
+    $JettonDex$_fun_getJettonABalance INLINECALLDICT
+    5 1 BLKDROP2
+  }>
+  %getJettonBBalance PROC:<{
+    $JettonDex$_contract_load INLINECALLDICT
+    $JettonDex$_fun_getJettonBBalance INLINECALLDICT
+    5 1 BLKDROP2
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -355,9 +466,7 @@ PROGRAM{
     1 LDI
     SWAP
   }>
-  $SampleTactContract$_contract_router_internal PROCREF:<{
-    c2 SAVE
-    SAMEALTSAVE
+  $JettonDex$_contract_router_internal PROCREF:<{
     SWAP
     IFJMP:<{
       DROP
@@ -373,38 +482,34 @@ PROGRAM{
       32 PLDU
     }>
     DUP
-    2278832834 PUSHINT
+    3034418276 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
-      $Add$_load INLINECALLDICT
+      $AddJetton$_load INLINECALLDICT
       NIP
-      $SampleTactContract$_internal_binary_Add INLINECALLDICT
+      $JettonDex$_internal_binary_AddJetton INLINECALLDICT
       TRUE
     }>
     DUP
-    2490013878 PUSHINT
+    579702569 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
-      $Deploy$_load INLINECALLDICT
-      NIP
-      $SampleTactContract$_internal_binary_Deploy INLINECALLDICT
+      $SwapRequest$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $JettonDex$_internal_binary_SwapRequest INLINECALLDICT
       TRUE
     }>
-    0 EQINT
-    IF:<{
-      HASHSU
-      89092981215441470209245890604563109773385607357076622359718516871332286001838 PUSHINT
-      EQUAL
-      IFJMP:<{
-        $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae INLINECALLDICT
-        TRUE
-        RETALT
-      }>
-    }>ELSE<{
-      DROP
+    2490013878 PUSHINT
+    EQUAL
+    IFJMP:<{
+      $Deploy$_load INLINECALLDICT
+      NIP
+      $JettonDex$_internal_binary_Deploy INLINECALLDICT
+      TRUE
     }>
+    DROP
     FALSE
   }>
   recv_internal PROC:<{
@@ -425,10 +530,10 @@ PROGRAM{
     __tact_context SETGLOB
     s0 s2 XCHG
     __tact_context_sender SETGLOB
-    $SampleTactContract$_contract_load INLINECALLDICT
-    2SWAP
-    $SampleTactContract$_contract_router_internal INLINECALLDICT
+    $JettonDex$_contract_load INLINECALLDICT
+    2 5 BLKSWAP
+    $JettonDex$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
-    $SampleTactContract$_contract_store INLINECALLDICT
+    $JettonDex$_contract_store INLINECALLDICT
   }>
 }END>c

@@ -1,4 +1,4 @@
-# Jetton Dex Smart Contract
+# Jetton Swap Smart Contract
 
 This is develope by using Tact template.
 This template comes pre-configured to kickstart your new Tact project. It includes the Tact compiler, TypeScript, Jest integrated with [tact-emulator](https://github.com/tact-lang/tact-emulator), and a sample demonstrating how to run tests.
